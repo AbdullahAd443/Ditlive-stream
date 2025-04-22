@@ -1,0 +1,32 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>DitLive Video</title>
+  <script src="https://cdn.agora.io/sdk/web/AgoraRTC_N.js"></script>
+</head>
+<body>
+  <h2>DitLive Stream</h2>
+  <div id="local-stream" style="width: 100%; height: 300px; background: #000;"></div>
+
+  <script>
+    var client = AgoraRTC.createClient({ mode: "live", codec: "vp8" });
+    var appId = "b1ee714b93034c3eaa60b2e9d546f3dc"; // Your Agora App ID
+    var channel = "ditlive"; // Your channel name
+
+    client.init(appId, function () {
+      client.join(null, channel, null, function (uid) {
+        let localStream = AgoraRTC.createStream({
+          audio: true,
+          video: true
+        });
+
+        localStream.init(function () {
+          localStream.play("local-stream");
+          client.publish(localStream);
+        });
+      });
+    });
+  </script>
+</body>
+</html>
